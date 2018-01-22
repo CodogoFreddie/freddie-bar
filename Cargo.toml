@@ -1,0 +1,6 @@
+[package]
+name = "freddie-bar"
+version = "0.1.0"
+authors = ["Freddie Ridell <freddie@codogo.io>"]
+
+[dependencies]

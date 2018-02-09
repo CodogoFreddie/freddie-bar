@@ -1,23 +1,24 @@
-extern crate chrono;
+//extern crate chrono;
 
 use std::{thread, time};
 
-mod clock;
+//mod clock;
 mod disk_usage;
 mod render;
 
 fn render_left() -> String {
-    let acc = render::with_fg(String::from(render::RED), String::from("left"));
+    let acc = String::from("RIGHT");
     return acc;
 }
 
 fn render_center() -> String {
-    let acc = render::with_fg(String::from(render::RED), String::from("Center"));
+    let acc = render::with_fg((render::RED), String::from("Center"));
     return acc;
 }
 
-fn render_right() -> &'static str {
-    let acc = clock::get();
+fn render_right() -> String {
+    let acc = disk_usage::get();
+    //let acc = clock::get();
     return acc;
 }
 
@@ -27,7 +28,7 @@ fn render_bar() -> String {
     let right = render_right();
 
     return render::with_bg(
-        String::from(render::BACKGROUND),
+        render::BACKGROUND,
         format!(
             "%{{l}}{}%{{c}}{}%{{r}}{}", left, center, right
             )

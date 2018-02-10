@@ -12,7 +12,7 @@ fn render_battery ( state: &str, percentage: i64, time_to: String) -> String {
     let second_half = text.chars().skip(split_point).collect();
 
     let colored = format!(
-        " {}{} ",
+        "{}{}",
         render::with_fg(
             render::BACKGROUND,
             render::with_bg(render::GREEN, first_half)

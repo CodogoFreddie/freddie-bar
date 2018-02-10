@@ -1,6 +1,7 @@
 extern crate chrono;
 extern crate serde;
 extern crate serde_json;
+extern crate regex;
 
 #[macro_use]
 extern crate serde_derive;
@@ -15,12 +16,13 @@ mod battery;
 //mod load;
 //mod memory;
 //mod network;
-//mod volume;
+mod volume;
 
 fn render_left() -> String {
     return format!(
-        "{}",
-        i3::get()
+        "{} {}",
+        i3::get(),
+        volume::get()
     );
 }
 
@@ -33,7 +35,7 @@ fn render_center() -> String {
 
 fn render_right() -> String {
     return format!(
-        "{}{}",
+        "{} {}",
         battery::get(),
         disk_usage::get(),
     );

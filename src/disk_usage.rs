@@ -2,24 +2,22 @@ use std::process::Command;
 
 use render;
 
-
 //TODO
 //change partitions to be a struct;
 
 fn is_interesting_partition ( partition : (i64, i64, f64, &str) ) -> bool {
-    let ( used, size, percentage, mounted_on ) = partition;
+    let ( used, _size, percentage, mounted_on ) = partition;
 
-    return (
+    return 
         used != 0
         &&
         percentage > 5.0
         &&
-        mounted_on.split("/").count() == 2
-        );
+        mounted_on.split("/").count() == 2;
 }
 
 fn render_partition ( partition : (i64, i64, f64, &str) ) -> String {
-    let ( used, size, percentage, mounted_on ) = partition;
+    let ( _used, _size, percentage, mounted_on ) = partition;
 
     let msg = String::from(format!(" {}: {}% ", mounted_on, percentage as i64));
 
@@ -27,10 +25,13 @@ fn render_partition ( partition : (i64, i64, f64, &str) ) -> String {
         return render::with_bg(render::RED, msg);
     }
     if percentage > 40.0 {
-        return render::with_bg(render::YELLOW, msg);
+        return render::with_bg(render::ORANGE, msg);
     }
 
-    return render::with_bg(render::GREEN, msg);
+    return render::with_fg(
+        render::BACKGROUND,
+        render::with_bg(render::GREEN, msg)
+        );
 }
 
 pub fn get () -> String {
@@ -81,10 +82,6 @@ pub fn get () -> String {
 
         partitions_data.push(render_partition(partition));
     }
-
-    //let vec = split.collect::<Vec<&str>>();
-    // OR
-    //let vec: Vec<&str> = split.collect();
 
     return partitions_data.join("");
 }

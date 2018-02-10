@@ -1,25 +1,42 @@
-//extern crate chrono;
+extern crate chrono;
+extern crate serde;
+extern crate serde_json;
+
+#[macro_use]
+extern crate serde_derive;
 
 use std::{thread, time};
 
-//mod clock;
+mod clock;
 mod disk_usage;
+mod i3;
 mod render;
+mod battery;
+//mod load;
+//mod memory;
+//mod network;
+//mod volume;
 
 fn render_left() -> String {
-    let acc = String::from("RIGHT");
-    return acc;
+    return format!(
+        "{}",
+        i3::get()
+    );
 }
 
 fn render_center() -> String {
-    let acc = render::with_fg((render::RED), String::from("Center"));
-    return acc;
+    return format!(
+        "{}",
+        clock::get()
+    );
 }
 
 fn render_right() -> String {
-    let acc = disk_usage::get();
-    //let acc = clock::get();
-    return acc;
+    return format!(
+        "{}{}",
+        battery::get(),
+        disk_usage::get(),
+    );
 }
 
 fn render_bar() -> String {
@@ -27,12 +44,7 @@ fn render_bar() -> String {
     let center = render_center();
     let right = render_right();
 
-    return render::with_bg(
-        render::BACKGROUND,
-        format!(
-            "%{{l}}{}%{{c}}{}%{{r}}{}", left, center, right
-            )
-        );
+    return format!( "%{{l}}{}%{{c}}{}%{{r}}{}", left, center, right );
 }
 
 fn main() {

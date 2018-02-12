@@ -6,7 +6,7 @@ extern crate regex;
 #[macro_use]
 extern crate serde_derive;
 
-use std::{thread, time};
+use std::{thread, time, env};
 
 mod clock;
 mod disk_usage;
@@ -18,10 +18,10 @@ mod battery;
 //mod network;
 mod volume;
 
-fn render_left() -> String {
+fn render_left(screen: String) -> String {
     return format!(
         "{} {}",
-        i3::get(),
+        i3::get(screen),
         volume::get()
     );
 }
@@ -41,8 +41,8 @@ fn render_right() -> String {
     );
 }
 
-fn render_bar() -> String {
-    let left = render_left();
+fn render_bar(screen: String) -> String {
+    let left = render_left(screen);
     let center = render_center();
     let right = render_right();
 
@@ -53,7 +53,19 @@ fn main() {
     let ten_millis = time::Duration::from_millis(1000);
 
     loop {
-        println!("{}", render_bar());
+        let mut bars = Vec::new();
+
+        for display in env::args().skip(1) {
+            bars.push(
+                render_bar(display)
+            );
+        }
+
+        println!(
+            "{}",
+            bars.join("%{S+}")
+        );
+
         thread::sleep(ten_millis);
     }
 }

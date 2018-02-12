@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cargo run | lemonbar -B "#272822" -F "#fff" -f "Tamzen-7"| /bin/bash
+cargo run DVI-D-0 DVI-I-0 | lemonbar -B "#272822" -F "#fff" -f "Tamzen"| /bin/bash

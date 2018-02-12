@@ -43,7 +43,7 @@ fn render_workspace (workspace : Workspace ) -> String {
 }
 
 //i3-msg -t get_workspaces
-pub fn get() -> String {
+pub fn get(screen: String) -> String {
     let output = Command::new("i3-msg")
         .args( &["-t", "get_workspaces"])
         .output().unwrap_or_else(|e| {
@@ -63,7 +63,9 @@ pub fn get() -> String {
 
     let mut rendered_workspaces = Vec::new();
     for workspace in parsed_workspaces {
-        rendered_workspaces.push(render_workspace(workspace));
+        if workspace.output == screen {
+            rendered_workspaces.push(render_workspace(workspace));
+        }
     }
 
     return rendered_workspaces.join("");
